@@ -1,0 +1,49 @@
+service:
+  name: test
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-plugin-warmup
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: eu-west-1
+  stage: ${opt:stage, 'dev'}
+  deploymentBucket: serverless.bucket_name
+  memorySize: 1024
+  timeout: 10
+  environment: ${file(../config/config.${self:provider.stage}.yml)}
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'lambda:InvokeFunction'
+      Resource:
+        - Fn::Join:
+            - ':'
+            - - arn:aws:lambda
+              - Ref: AWS::Region
+              - Ref: AWS::AccountId
+              - function:${file(../config/config.${self:provider.stage}.yml):internalService}-${opt:stage, self:provider.stage}-*
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+      Resource:
+        - Fn::Join:
+            - ''
+            - - "arn:aws:s3:::"
+              - ${file(../config/config.${self:provider.stage}.yml):bucketName}
+              - '/*'
+functions:
+  functionName:
+    warmup: true
+    handler: functions/test/handler.main
+
+custom:
+  warmup:
+    folderName: '${self:service}-${opt:stage, self:provider.stage}_warmup'
+    memorySize: 256
+    schedule: 'rate(20 minutes)'
+    timeout: 60
+    prewarm: false

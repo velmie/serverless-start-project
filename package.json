@@ -1,0 +1,31 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    },
+  "dependencies": {
+    "awesome-typescript-loader": "^5.2.1",
+    "aws-lambda": "^0.1.2",
+    "aws-sdk": "^2.400.0",
+    "class-validator": "^0.9.1",
+    "pg": "^7.8.0",
+    "pluralize": "^7.0.0",
+    "reflect-metadata": "^0.1.10",
+    "serverless": "^1.27.2",
+    "serverless-webpack": "^4.4.0",
+    "ts-loader": "^5.3.3",
+    "tslint": "^5.12.1",
+    "tslint-microsoft-contrib": "^6.0.0",
+    "typeorm": "^0.2.12",
+    "typescript": "^3.3.3",
+    "webpack": "^4.29.3"
+  },
+  "devDependencies": {
+    "@types/expect": "^1.20.2",
+    "serverless-offline": "^3.16.0",
+    "serverless-plugin-warmup": "^3.4.0-rc.1",
+    "ts-node": "^4.1.0",
+    "tsconfig-paths": "^3.1.1"
+  }
+}

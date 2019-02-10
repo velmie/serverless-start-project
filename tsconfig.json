@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "sourceMap": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "esnext"
+    ],
+    "paths": {
+      "@shared/*": ["./shared/*"],
+      "@authorizers/*": ["./shared/authorizers/*"],
+      "@services/*": ["./shared/services/*"],
+      "@entities/*": ["./shared/entities/*"],
+      "@repositories/*": ["./shared/repositories/*"],
+      "@constants/*": ["./shared/constants/*"],
+      "@errors/*": ["./shared/errors/*"],
+      "@logger/*": ["./shared/logger/*"],
+      "@responses": ["./shared/http/response/responses"],
+      "@responseErrors": ["./shared/http/response/errors"],
+      "@helpers/*": ["./shared/helpers/*"],
+      "@valueObjects/*": ["./shared/valueObjects/*"],
+      "@serializer/*": ["./shared/services/training/serializer/*"]
+    }
+  },
+  "exclude": [
+    "./node_modules"
+  ]
+}
