@@ -1,12 +1,12 @@
 import {Callback} from 'aws-lambda';
 import {ErrorCollection} from '@errors/custom/misc/errorCollection';
 import {validationErrorCollectionResp} from '@responseErrors';
+import { ResponceInterface } from '@shared/http/response/responceInterface';
 
 /**
- * @param {} cb
  * @param {ErrorCollection} e
  * @returns {}
  */
-export function handleCollectionError(cb: Callback, e: ErrorCollection) {
-  return validationErrorCollectionResp(cb, e);
+export function handleCollectionError(e: ErrorCollection): ResponceInterface {
+  return validationErrorCollectionResp(e);
 }

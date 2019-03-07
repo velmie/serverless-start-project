@@ -1,16 +1,15 @@
 import 'reflect-metadata';
-import {APIGatewayEvent, Callback, Context, Handler} from 'aws-lambda';
-import {responseOk} from '@responses';
-import {parseJSON} from '@shared/http/helpers/parseJSON';
-import {handleError} from '@errors/handle/handleError';
+import { APIGatewayEvent, Callback, Context } from 'aws-lambda';
+import { responseOk } from '@responses';
+import { handleError } from '@errors/handle/handleError';
 import { MailSystemParametersRequest } from '@valueObjects/email/mailSystemParametersRequest';
 
-export async function main(event: APIGatewayEvent, context: Context, cb: Callback): Handler {
+export async function main(event: APIGatewayEvent, context: Context, cb: Callback): Promise<any> {
   context.callbackWaitsForEmptyEventLoop = false;
   try {
     const payload = new MailSystemParametersRequest({});
-    responseOk(cb, payload);
+    return responseOk(payload);
   } catch (e) {
-    handleError(cb, e);
+    return handleError(e);
   }
 }

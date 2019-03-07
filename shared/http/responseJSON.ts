@@ -1,4 +1,6 @@
-export class ResponseJSON {
+import { ResponceInterface } from '@shared/http/response/responceInterface';
+
+export class ResponseJSON implements ResponceInterface {
   public readonly body: string;
   public readonly statusCode: number;
 

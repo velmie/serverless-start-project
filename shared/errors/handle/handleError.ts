@@ -1,17 +1,25 @@
-import {Callback} from 'aws-lambda';
-import {ErrorCollection} from '@errors/custom/misc/errorCollection';
-import {handleCollectionError} from '@errors/handle/misc/handleCollectionError';
-import {handleSingleError} from '@errors/handle/misc/handleSingleError';
+import { ErrorCollection } from '@errors/custom/misc/errorCollection';
+import { handleCollectionError } from '@errors/handle/misc/handleCollectionError';
+import { handleSingleError } from '@errors/handle/misc/handleSingleError';
+import { ResponceInterface } from '@shared/http/response/responceInterface';
+import { FieldErrorCollection } from '@errors/custom/fieldErrorCollection';
+import { FieldError } from '@errors/custom/fieldError';
 
 /**
- * @param {} cb
  * @param {Error} e
  * @returns {}
  */
-export function handleError(cb: Callback, e: Error | ErrorCollection) {
+export function handleError(e: Error | ErrorCollection): ResponceInterface {
   if (e instanceof ErrorCollection) {
-    handleCollectionError(cb, <ErrorCollection> e);
+   return handleCollectionError(<ErrorCollection> e);
   } else {
-    handleSingleError(cb, <Error> e);
+   return handleSingleError(<Error> e);
   }
+}
+
+export function handleNestedErrors(e: FieldErrorCollection, parentFieldName: string): FieldErrorCollection {
+  e.errors.forEach((error: FieldError) => {
+    (<{ field: string }>error.source).field = `${parentFieldName}.${(<{ field: string }>error.source).field}`;
+  });
+  return e;
 }

@@ -1,4 +1,4 @@
-import {Statement} from 'aws-lambda';
+import { Statement, StatementResource } from 'aws-lambda';
 
 /**
  * AuthPolicy receives a set of allowed and denied methods and generates a valid
@@ -170,11 +170,11 @@ export class AuthPolicy {
    */
   private getEmptyStatement = (effect) => {
     const statementEffect = effect.substring(0, 1).toUpperCase() + effect.substring(1, effect.length).toLowerCase();
-    const statement: Statement = {};
-    statement.Action = 'execute-api:Invoke';
-    statement.Effect = statementEffect;
-    statement.Resource = [];
-
+    const statement: Statement = <Statement>{
+      Action: 'execute-api:Invoke',
+      Effect: statementEffect,
+      Resource: []
+    };
     return statement;
   };
 
@@ -197,16 +197,16 @@ export class AuthPolicy {
       for (let i = 0; i < methods.length; i++) {
         const curMethod = methods[i];
         if (curMethod.conditions === null || curMethod.conditions.length === 0) {
-          statement.Resource.push(curMethod.resourceArn);
+          (<{ Resource: string[] }>statement).Resource.push(curMethod.resourceArn);
         } else {
           const conditionalStatement = this.getEmptyStatement(effect);
-          conditionalStatement.Resource.push(curMethod.resourceArn);
+          (<{ Resource: string[] }>statement).Resource.push(curMethod.resourceArn);
           conditionalStatement.Condition = curMethod.conditions;
           statements.push(conditionalStatement);
         }
       }
 
-      if (statement.Resource !== null && statement.Resource.length > 0) {
+      if ((<{ Resource: string[] | null }>statement).Resource !== null && (<{ Resource: string[] }>statement).Resource.length > 0) {
         statements.push(statement);
       }
     }

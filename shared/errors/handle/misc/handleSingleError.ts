@@ -1,38 +1,31 @@
-import {Callback} from 'aws-lambda';
-import {EntityNotFoundError} from '@errors/typeorm/entityNotFoundError';
-import {ValidationError} from '@errors/custom/validationError';
-import {FieldError} from '@errors/custom/fieldError';
-import {BadRequestError} from '@errors/custom/http/badRequestError';
-import {LambdaInvokeError} from '@errors/custom/lambdaInvokeError';
-import {AlreadyExists} from '@errors/custom/alreadyExists';
-import {responseAlreadyReported} from '@responses';
-import {
-  badRequestErrorResp,
-  internalErrorResp,
-  validationErrorResp,
-  notFoundErrorResp,
-  lambdaInvokeErrorResp
-} from '@responseErrors';
+import { EntityNotFoundError } from '@errors/typeorm/entityNotFoundError';
+import { ValidationError } from '@errors/custom/validationError';
+import { FieldError } from '@errors/custom/fieldError';
+import { BadRequestError } from '@errors/custom/http/badRequestError';
+import { LambdaInvokeError } from '@errors/custom/lambdaInvokeError';
+import { AlreadyExists } from '@errors/custom/alreadyExists';
+import { responseAlreadyReported } from '@responses';
+import { badRequestErrorResp, internalErrorResp, lambdaInvokeErrorResp, notFoundErrorResp, validationErrorResp } from '@responseErrors';
+import { ResponceInterface } from '@shared/http/response/responceInterface';
 
 /**
- * @param {} cb
  * @param {Error} e
  * @returns {}
  */
-export function handleSingleError(cb: Callback, e: Error) {
+export function handleSingleError(e: Error): ResponceInterface {
   switch (true) {
     case e instanceof AlreadyExists:
-      return responseAlreadyReported(cb, e);
+      return responseAlreadyReported(e);
     case e instanceof EntityNotFoundError:
-      return notFoundErrorResp(cb, e);
+      return notFoundErrorResp(e);
     case e instanceof ValidationError:
     case e instanceof FieldError:
-      return validationErrorResp(cb, e);
+      return validationErrorResp(e);
     case e instanceof BadRequestError:
-      return badRequestErrorResp(cb, e);
+      return badRequestErrorResp(e);
     case e instanceof LambdaInvokeError:
-      return lambdaInvokeErrorResp(cb, <LambdaInvokeError>e);
+      return lambdaInvokeErrorResp(<LambdaInvokeError>e);
     default:
-      return internalErrorResp(cb, e);
+      return internalErrorResp(e);
   }
 }

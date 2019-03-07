@@ -11,7 +11,7 @@ export class ResponseSingleError implements CustomErrorInterface {
     if (typeof(code) === 'object' && isCustomErrorInterface(code)) {
       this.code = code.code;
       this.target = code.target;
-      this.message = code.message;
+      this.message = (<CustomErrorInterface>code).message;
       if (code.source) {
         const source: any = JSON.parse(JSON.stringify(code.source));
         if (source.hasOwnProperty('privateCriteria')) {
@@ -23,7 +23,7 @@ export class ResponseSingleError implements CustomErrorInterface {
     } else if (typeof(code) === 'string') {
       this.code = code;
       this.target = target ? target : ErrorTarget.COMMON;
-      this.message = message;
+      this.message = <string>message;
     }
   }
 }

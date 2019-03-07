@@ -1,5 +1,3 @@
-import {APIGatewayEvent} from 'aws-lambda';
-
-export function isWarmUp(event: APIGatewayEvent): boolean {
+export function isWarmUp(event: any): boolean {
   return event.source === 'serverless-plugin-warmup';
 }

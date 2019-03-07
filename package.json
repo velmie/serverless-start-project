@@ -2,8 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "scripts": {
-    },
+  "scripts": {},
   "dependencies": {
     "awesome-typescript-loader": "^5.2.1",
     "aws-lambda": "^0.1.2",
@@ -22,6 +21,7 @@
     "webpack": "^4.29.3"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.19",
     "@types/expect": "^1.20.2",
     "serverless-offline": "^3.16.0",
     "serverless-plugin-warmup": "^3.4.0-rc.1",

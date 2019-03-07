@@ -1,55 +1,121 @@
-import {Callback, Handler} from 'aws-lambda';
-import {logger} from '@logger/logger';
+import { cacheControl, contentLength, contentType, expires } from '@constants/headers';
+import { isJsonString } from '@helpers/json/isJsonString';
+import { logger } from '@logger/logger';
+import { ResponceInterface } from '@shared/http/response/responceInterface';
 
-export function response(cb: Callback, data?: object, headers?: object): Handler {
+export class Response {
 
-  const httpResponse = {
-    statusCode: 200,
-    body: ''
-  };
+  private statusCode: number;
+  private headers: object;
+  private body: string;
 
-  if (data) {
-    httpResponse.body = JSON.stringify(data);
+  public constructor() {
+    this.initializeByDefault();
   }
 
-  if (headers) {
-    if (headers.hasOwnProperty('statusCode')) {
-      httpResponse.statusCode = (headers as any).statusCode;
-      delete (headers as any).statusCode;
+  private initializeByDefault(): void {
+    this.statusCode = 200;
+    this.headers = {
+      ...cacheControl.noCacheNoStoreRevalidateAgeZero,
+      ...expires.zero
+    };
+    this.body = '';
+  }
+
+  public setStatusCode(statusCode: number): Response {
+    this.statusCode = statusCode;
+    return this;
+  }
+
+  public addHeaders(headers: object): Response {
+    this.headers = { ...this.headers, ...headers };
+    return this;
+  }
+
+  public setBody(body: object | string): Response {
+    this.body = (typeof body === 'object') ? JSON.stringify(body) : body;
+    return this;
+  }
+
+  public responseCallback(): ResponceInterface {
+    this.logResponse();
+    return {
+      statusCode: this.statusCode,
+      headers: this.headers,
+      body: this.body
+    };
+  }
+
+  private logResponse(): void {
+    try {
+      logger.info(JSON.stringify({
+        statusCode: this.statusCode,
+        headers: this.headers,
+        body: (isJsonString(this.body)) ? JSON.parse(this.body) : this.body
+      }));
+    } catch (e) {
+      logger.error('Error on logging response', e);
     }
+  }
+}
 
-    (httpResponse as any).headers = headers;
+export function  responseOk(data: object): ResponceInterface {
+  return new Response()
+    .setBody(data)
+    .addHeaders(contentType.applicationJSON)
+    .responseCallback();
+}
+
+export function responseCreated(data: object): ResponceInterface {
+  return new Response()
+    .setBody(data)
+    .setStatusCode(201)
+    .addHeaders(contentType.applicationJSON)
+    .responseCallback();
+}
+
+export function responseAccepted(): ResponceInterface {
+  return new Response()
+    .setStatusCode(202)
+    .addHeaders(contentType.applicationJSON)
+    .responseCallback();
+}
+
+export function responseNoContent(): ResponceInterface {
+  return new Response()
+    .setStatusCode(204)
+    .addHeaders(contentLength.zero)
+    .responseCallback();
+}
+
+export function responseRedirect(url: string): ResponceInterface {
+  return new Response()
+    .setStatusCode(301)
+    .addHeaders({ Location: url, ...contentLength.zero })
+    .responseCallback();
+}
+
+export function responseAlreadyReported(error?: Error): ResponceInterface {
+  if (error) {
+    logger.error(error.message, error);
   }
 
-  return cb(null, httpResponse);
+  return new Response()
+    .setStatusCode(208)
+    .addHeaders(contentLength.zero)
+    .responseCallback();
 }
 
-export function responseOk(cb: Callback, data: object): Handler {
-  return response(cb, data, {statusCode: 200});
+export function responseHtml(html: string): ResponceInterface {
+  return new Response()
+    .addHeaders(contentType.textHTML)
+    .setBody(html)
+    .responseCallback();
 }
 
-export function responseCreated(cb: Callback, data?: object): Handler {
-  return response(cb, data, {statusCode: 201});
-}
-
-export function responseNoContent(cb: Callback): Handler {
-  return response(cb, undefined, {statusCode: 204});
-}
-
-export function responseAlreadyReported(cb: Callback, e?: Error): Handler {
-  if (e) {
-    logger.error(e.message, e);
-  }
-
-  return response(cb, undefined, {statusCode: 208});
-}
-
-export function responseHtml(cb: Callback, html: string): Handler {
-  return cb(null, {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'text/html'
-    },
-    body: html
-  });
+export function responseText(text: string): ResponceInterface {
+  return new Response()
+    .addHeaders(contentType.textPlain)
+    .setBody(text)
+    .responseCallback();
 }
