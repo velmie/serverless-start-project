@@ -1,4 +1,4 @@
-export interface ResponceInterface {
+export interface IResponce {
   statusCode: number;
   headers?: object;
   body: string;

@@ -1,6 +1,6 @@
-import { ResponceInterface } from '@shared/http/response/responceInterface';
+import { IResponce } from '@shared/http/response/responceInterface';
 
-export class ResponseJSON implements ResponceInterface {
+export class ResponseJSON implements IResponce {
   public readonly body: string;
   public readonly statusCode: number;
 

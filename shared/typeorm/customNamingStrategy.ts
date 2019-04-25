@@ -1,13 +1,9 @@
-import {NamingStrategyInterface, DefaultNamingStrategy} from 'typeorm';
-import {pluralCamelCase, singularSnakeCase} from 'shared/typeorm/pluralizeWord';
-import {snakeCase} from '@helpers/snakeCase';
-import {logger} from '@logger/logger';
+import { DefaultNamingStrategy, NamingStrategyInterface } from 'typeorm';
+import { pluralCamelCase, singularSnakeCase } from 'shared/typeorm/pluralizeWord';
+import { snakeCase } from '@helpers/snakeCase';
+import { logger } from '@logger/logger';
 
-/**
- * Custom naming strategy
- */
 export class CustomNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
-
   /**
    * @param {string} targetName
    * @param {string} userSpecifiedName
@@ -20,7 +16,7 @@ export class CustomNamingStrategy extends DefaultNamingStrategy implements Namin
       }
 
       return snakeCase(pluralCamelCase(targetName));
-    } catch (e) {
+    } catch (e: Error) {
       logger.error(e.message, e);
       throw e;
     }
@@ -73,7 +69,7 @@ export class CustomNamingStrategy extends DefaultNamingStrategy implements Namin
   public joinTableColumnName(tableName: string, propertyName: string, columnName: string): string {
     try {
       return snakeCase(singularSnakeCase(tableName) + '_' + (columnName ? columnName : propertyName));
-    } catch (e) {
+    } catch (e: Error) {
       logger.error(e.message, e);
       throw e;
     }
@@ -84,32 +80,7 @@ export class CustomNamingStrategy extends DefaultNamingStrategy implements Namin
    * @param parentTableIdPropertyName
    * @return {string}
    */
-  public classTableInheritanceParentColumnName(parentTableName: any, parentTableIdPropertyName: any): string {
+  public classTableInheritanceParentColumnName(parentTableName: string, parentTableIdPropertyName: string): string {
     return snakeCase(parentTableName + '_' + parentTableIdPropertyName);
   }
-
-  /*  public closureJunctionTableName(originalClosureTableName: string): string {
-      return super.closureJunctionTableName(originalClosureTableName);
-    }*/
-
-  /*  public indexName(customName: string | any, tableName: string, columns: string[]): string {
-      return super.indexName(customName, tableName, columns);
-    }*/
-
-  /*  public joinTableColumnDuplicationPrefix(columnName: string, index: number): string {
-      return super.joinTableColumnDuplicationPrefix(columnName, index);
-    }*/
-
-  /*  public joinTableInverseColumnName(tableName: string, propertyName: string, columnName?: string): string {
-      return super.joinTableInverseColumnName(tableName, propertyName, columnName);
-    }*/
-
-  /*  public foreignKeyName(tableName: string, columnNames: string[], referencedTableName: string,
-  referencedColumnNames: string[]): string {
-      return super.foreignKeyName(tableName, columnNames, referencedTableName, referencedColumnNames);
-    }*/
-
-  /*  public prefixTableName(prefix: string, tableName: string): string {
-      return super.prefixTableName(prefix, tableName);
-    }*/
 }

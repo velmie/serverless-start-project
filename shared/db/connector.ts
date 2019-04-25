@@ -1,3 +1,4 @@
+/*tslint:disable: no-import-side-effect*/
 import 'reflect-metadata';
 import { Connection, createConnection, getConnection } from 'typeorm';
 import { CustomNamingStrategy } from '@shared/typeorm/customNamingStrategy';
@@ -34,18 +35,18 @@ const connector = async (): Promise<Connection> => {
   let connection: Connection | undefined;
 
   try {
-    connection = await getConnection(process.env.connectionName);
+    connection = getConnection(process.env.connectionName);
   } catch (e) {
     // empty
   }
 
   try {
-    if (typeof connection === 'undefined') {
+    if (connection === undefined) {
       return createDbConnection();
     } else {
       return connection;
     }
-  } catch (e) {
+  } catch (e: Error) {
     logger.error(e.message, e);
     throw e;
   }

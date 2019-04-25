@@ -1,12 +1,11 @@
-import {FieldErrorFactory} from '@errors/custom/misc/fieldErrorFactory';
-import {FieldError} from '@errors/custom/fieldError';
-import {ValidationError as ValidatorError} from 'class-validator';
+import { FieldErrorFactory } from '@errors/custom/misc/fieldErrorFactory';
+import { FieldError } from '@errors/custom/fieldError';
+import { ValidationError as ValidatorError } from 'class-validator';
 
 /**
  * @class FieldErrorCollectionGenerator
  */
 export class FieldErrorCollectionGenerator {
-
   public fieldErrors: FieldError[];
   public factory: FieldErrorFactory;
 

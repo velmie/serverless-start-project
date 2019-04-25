@@ -1,7 +1,7 @@
 import { ErrorCollection } from '@errors/custom/misc/errorCollection';
 import { handleCollectionError } from '@errors/handle/misc/handleCollectionError';
 import { handleSingleError } from '@errors/handle/misc/handleSingleError';
-import { ResponceInterface } from '@shared/http/response/responceInterface';
+import { IResponce } from '@shared/http/response/responceInterface';
 import { FieldErrorCollection } from '@errors/custom/fieldErrorCollection';
 import { FieldError } from '@errors/custom/fieldError';
 
@@ -9,7 +9,7 @@ import { FieldError } from '@errors/custom/fieldError';
  * @param {Error} e
  * @returns {}
  */
-export function handleError(e: Error | ErrorCollection): ResponceInterface {
+export function handleError(e: Error | ErrorCollection): IResponce {
   if (e instanceof ErrorCollection) {
    return handleCollectionError(<ErrorCollection> e);
   } else {

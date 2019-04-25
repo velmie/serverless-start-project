@@ -1,13 +1,12 @@
-import {ErrorCode, ErrorTarget} from '@constants/errors';
-import {CustomErrorInterface} from '@errors/custom/misc/customErrorInterface';
+import { ErrorCode, ErrorTarget } from '@constants/errors';
+import { ICustomError } from '@errors/custom/misc/customErrorInterface';
 
 /**
  * @class ValidationError
  */
 export class ValidationError
   extends Error
-  implements CustomErrorInterface {
-
+  implements ICustomError {
   public readonly code: string;
   public readonly target: string;
 

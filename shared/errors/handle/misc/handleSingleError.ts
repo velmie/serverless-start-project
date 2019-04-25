@@ -6,13 +6,13 @@ import { LambdaInvokeError } from '@errors/custom/lambdaInvokeError';
 import { AlreadyExists } from '@errors/custom/alreadyExists';
 import { responseAlreadyReported } from '@responses';
 import { badRequestErrorResp, internalErrorResp, lambdaInvokeErrorResp, notFoundErrorResp, validationErrorResp } from '@responseErrors';
-import { ResponceInterface } from '@shared/http/response/responceInterface';
+import { IResponce } from '@shared/http/response/responceInterface';
 
 /**
  * @param {Error} e
  * @returns {}
  */
-export function handleSingleError(e: Error): ResponceInterface {
+export function handleSingleError(e: Error): IResponce {
   switch (true) {
     case e instanceof AlreadyExists:
       return responseAlreadyReported(e);

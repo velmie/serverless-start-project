@@ -1,13 +1,12 @@
-import {ErrorTarget} from '@constants/errors';
-import {CustomErrorInterface} from '@errors/custom/misc/customErrorInterface';
+import { ErrorTarget } from '@constants/errors';
+import { ICustomError } from '@errors/custom/misc/customErrorInterface';
 
 /**
  * @class FieldError
  */
 export class FieldError
   extends Error
-  implements CustomErrorInterface {
-
+  implements ICustomError {
   public readonly code: string;
   public readonly target: string;
 

@@ -1,10 +1,10 @@
 import * as AWS from 'aws-sdk';
-import {LambdaInvoke} from '@constants/lambda';
-import {LambdaInvokeError} from '@errors/custom/lambdaInvokeError';
-import {LambdaRequestPayloadInterface} from '@services/aws/misc/lambdaRequestPayloadInterface';
-import {getRegion} from '@services/aws/misc/getRegion';
-import {isStatusCodeSuccess} from '@helpers/http/isStatusCodeSuccess';
-import {logger} from '@logger/logger';
+import { LambdaInvoke } from '@constants/lambda';
+import { LambdaInvokeError } from '@errors/custom/lambdaInvokeError';
+import { ILambdaRequestPayloadInterface } from '@services/aws/misc/lambdaRequestPayloadInterface';
+import { getRegion } from '@services/aws/misc/getRegion';
+import { isStatusCodeSuccess } from '@helpers/http/isStatusCodeSuccess';
+import { logger } from '@logger/logger';
 
 /**
  * Invoke lambda function
@@ -24,7 +24,7 @@ export async function lambdaInvoke(functionName: string, params: object = {}) {
     throw new Error(`Error on invoke lambda function ${functionName}`);
   }
 
-  const requestPayload: LambdaRequestPayloadInterface = JSON.parse(request.Payload);
+  const requestPayload: ILambdaRequestPayloadInterface = JSON.parse(request.Payload);
 
   if (Object.prototype.hasOwnProperty.call(request, LambdaInvoke.FUNCTION_ERROR)) {
     logger.error(`Error on invoke lambda function ${functionName}`, request.Payload);

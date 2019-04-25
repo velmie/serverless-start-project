@@ -1,13 +1,13 @@
-import {Callback, Handler} from 'aws-lambda';
-import {ErrorCollection} from '@errors/custom/misc/errorCollection';
-import {responseObjectToJSON} from '@shared/http/helpers/responseObjectToJSON';
-import {logger} from '@logger/logger';
-import {CustomErrorInterface, isCustomErrorInterface} from '@errors/custom/misc/customErrorInterface';
-import {ResponseSingleError} from '@errors/custom/http/responseSingleError';
-import {ErrorTarget} from '@constants/errors';
-import {snakeCase} from '@helpers/snakeCase';
-import {LambdaInvokeError} from '@errors/custom/lambdaInvokeError';
-import { ResponceInterface } from '@shared/http/response/responceInterface';
+import { ErrorCollection } from '@errors/custom/misc/errorCollection';
+import { responseObjectToJSON } from '@shared/http/helpers/responseObjectToJSON';
+import { logger } from '@logger/logger';
+import { ICustomError, isCustomErrorInterface } from '@errors/custom/misc/customErrorInterface';
+import { ResponseSingleError } from '@errors/custom/http/responseSingleError';
+import { ErrorTarget } from '@constants/errors';
+import { snakeCase } from '@helpers/snakeCase';
+import { LambdaInvokeError } from '@errors/custom/lambdaInvokeError';
+import { IResponce } from '@shared/http/response/responceInterface';
+/*tslint:disable: no-magic-numbers*/
 
 /**
  * Internal server error
@@ -15,7 +15,7 @@ import { ResponceInterface } from '@shared/http/response/responceInterface';
  * @param error
  * @param {number} statusCode - default is 500
  */
-export function internalErrorResp(error: Error, statusCode?: number): ResponceInterface {
+export function internalErrorResp(error: Error, statusCode?: number): IResponce {
   logger.error('internalErrorResp', error.message, JSON.stringify(error));
   const code = statusCode ? statusCode : 500;
 
@@ -47,7 +47,7 @@ export function unauthorizedResp(error: Error): string {
  * @param {Error} error
  * @returns {}
  */
-export function validationErrorResp(error: CustomErrorInterface | Error): ResponceInterface {
+export function validationErrorResp(error: ICustomError | Error): IResponce {
   return errorResp(error, 422);
 }
 
@@ -55,7 +55,7 @@ export function validationErrorResp(error: CustomErrorInterface | Error): Respon
  * @param {CustomErrorInterface} error
  * @returns {}
  */
-export function notFoundErrorResp(error: CustomErrorInterface | Error): ResponceInterface {
+export function notFoundErrorResp(error: ICustomError | Error): IResponce {
   return errorResp(error, 404);
 }
 
@@ -67,7 +67,7 @@ export function notFoundErrorResp(error: CustomErrorInterface | Error): Responce
  * @param {Error} error
  * @returns {}
  */
-export function badRequestErrorResp(error: CustomErrorInterface | Error): ResponceInterface {
+export function badRequestErrorResp(error: ICustomError | Error): IResponce {
   return errorResp(error, 400);
 }
 
@@ -75,7 +75,7 @@ export function badRequestErrorResp(error: CustomErrorInterface | Error): Respon
  * @param {LambdaInvokeError} error
  * @returns {}
  */
-export function lambdaInvokeErrorResp(error: LambdaInvokeError): ResponceInterface {
+export function lambdaInvokeErrorResp(error: LambdaInvokeError): IResponce {
   return error.getRequestPayload();
 }
 
@@ -85,7 +85,7 @@ export function lambdaInvokeErrorResp(error: LambdaInvokeError): ResponceInterfa
  * @returns {}
  */
 export function validationErrorCollectionResp(collection: ErrorCollection,
-                                              statusCode?: number): ResponceInterface {
+                                              statusCode?: number): IResponce {
   logger.error('Validation errors - collection', collection);
   const code: number = statusCode ? statusCode : 422;
 
@@ -96,7 +96,7 @@ export function validationErrorCollectionResp(collection: ErrorCollection,
  * @param {Error} error
  * @returns {}
  */
-export function responseHtmlError(error: Error): ResponceInterface {
+export function responseHtmlError(error: Error): IResponce {
   logger.error('Response html error', JSON.stringify(error));
 
   return  {
@@ -113,10 +113,10 @@ export function responseHtmlError(error: Error): ResponceInterface {
  * @param {number} statusCode
  * @returns {}
  */
-function errorResp(error: CustomErrorInterface | Error, statusCode: number): ResponceInterface {
+function errorResp(error: ICustomError | Error, statusCode: number): IResponce {
   let singleError: any;
   if (isCustomErrorInterface(error)) {
-    singleError = new ResponseSingleError(<CustomErrorInterface>error);
+    singleError = new ResponseSingleError(<ICustomError>error);
   } else {
     singleError = new ResponseSingleError(snakeCase(error.constructor.name), ErrorTarget.COMMON, error.message);
   }

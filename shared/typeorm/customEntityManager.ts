@@ -1,13 +1,10 @@
+/*tslint:disable: no-import-side-effect*/
 import 'reflect-metadata';
 import { EntityManager } from 'typeorm';
 import { Connection } from 'typeorm/connection/Connection';
 import { connector } from '@shared/db/connector';
 
-/**
- * Custom entity manager
- */
 export class CustomEntityManager extends EntityManager {
-
   private static instance: CustomEntityManager;
 
   /**
@@ -17,9 +14,6 @@ export class CustomEntityManager extends EntityManager {
     super(connection);
   }
 
-  /**
-   * @return {Promise<CustomEntityManager>}
-   */
   public static async getEntityManager() {
     if (!CustomEntityManager.instance) {
       const connection: Connection = await connector();

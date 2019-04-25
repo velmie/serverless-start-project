@@ -1,3 +1,4 @@
+/*tslint:disable: no-import-side-effect*/
 import 'reflect-metadata';
 import { APIGatewayEvent, Callback, Context } from 'aws-lambda';
 import { responseOk } from '@responses';

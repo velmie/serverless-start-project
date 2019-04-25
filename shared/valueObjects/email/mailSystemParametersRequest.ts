@@ -2,7 +2,6 @@ import {IsArray, IsString, IsBoolean, ArrayUnique, IsNotEmpty} from 'class-valid
 import {FillableObjectWithValidation} from '@valueObjects/fillableObjectWithValidation';
 
 export class MailSystemParametersRequest extends FillableObjectWithValidation {
-
   @IsArray()
   @ArrayUnique()
   public readonly emails: string[] = [];

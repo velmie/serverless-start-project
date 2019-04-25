@@ -1,25 +1,17 @@
 import { cacheControl, contentLength, contentType, expires } from '@constants/headers';
 import { isJsonString } from '@helpers/json/isJsonString';
 import { logger } from '@logger/logger';
-import { ResponceInterface } from '@shared/http/response/responceInterface';
+import { IResponce } from '@shared/http/response/responceInterface';
+
+/*tslint:disable: no-magic-numbers*/
 
 export class Response {
-
   private statusCode: number;
   private headers: object;
   private body: string;
 
   public constructor() {
     this.initializeByDefault();
-  }
-
-  private initializeByDefault(): void {
-    this.statusCode = 200;
-    this.headers = {
-      ...cacheControl.noCacheNoStoreRevalidateAgeZero,
-      ...expires.zero
-    };
-    this.body = '';
   }
 
   public setStatusCode(statusCode: number): Response {
@@ -37,13 +29,23 @@ export class Response {
     return this;
   }
 
-  public responseCallback(): ResponceInterface {
+  public responseCallback(): IResponce {
     this.logResponse();
     return {
       statusCode: this.statusCode,
       headers: this.headers,
       body: this.body
     };
+  }
+
+  private initializeByDefault(): void {
+    /*tslint:disable: no-magic-numbers*/
+    this.statusCode = 200;
+    this.headers = {
+      ...cacheControl.noCacheNoStoreRevalidateAgeZero,
+      ...expires.zero
+    };
+    this.body = '';
   }
 
   private logResponse(): void {
@@ -59,14 +61,14 @@ export class Response {
   }
 }
 
-export function  responseOk(data: object): ResponceInterface {
+export function responseOk(data: object): IResponce {
   return new Response()
     .setBody(data)
     .addHeaders(contentType.applicationJSON)
     .responseCallback();
 }
 
-export function responseCreated(data: object): ResponceInterface {
+export function responseCreated(data: object): IResponce {
   return new Response()
     .setBody(data)
     .setStatusCode(201)
@@ -74,28 +76,28 @@ export function responseCreated(data: object): ResponceInterface {
     .responseCallback();
 }
 
-export function responseAccepted(): ResponceInterface {
+export function responseAccepted(): IResponce {
   return new Response()
     .setStatusCode(202)
     .addHeaders(contentType.applicationJSON)
     .responseCallback();
 }
 
-export function responseNoContent(): ResponceInterface {
+export function responseNoContent(): IResponce {
   return new Response()
     .setStatusCode(204)
     .addHeaders(contentLength.zero)
     .responseCallback();
 }
 
-export function responseRedirect(url: string): ResponceInterface {
+export function responseRedirect(url: string): IResponce {
   return new Response()
     .setStatusCode(301)
     .addHeaders({ Location: url, ...contentLength.zero })
     .responseCallback();
 }
 
-export function responseAlreadyReported(error?: Error): ResponceInterface {
+export function responseAlreadyReported(error?: Error): IResponce {
   if (error) {
     logger.error(error.message, error);
   }
@@ -106,14 +108,14 @@ export function responseAlreadyReported(error?: Error): ResponceInterface {
     .responseCallback();
 }
 
-export function responseHtml(html: string): ResponceInterface {
+export function responseHtml(html: string): IResponce {
   return new Response()
     .addHeaders(contentType.textHTML)
     .setBody(html)
     .responseCallback();
 }
 
-export function responseText(text: string): ResponceInterface {
+export function responseText(text: string): IResponce {
   return new Response()
     .addHeaders(contentType.textPlain)
     .setBody(text)

@@ -1,16 +1,15 @@
-import {LambdaRequestPayloadInterface} from '@services/aws/misc/lambdaRequestPayloadInterface';
+import { ILambdaRequestPayloadInterface } from '@services/aws/misc/lambdaRequestPayloadInterface';
 
 /**
  * @class ValidationError
  */
 export class LambdaInvokeError extends Error {
-
-  private requestPayload: LambdaRequestPayloadInterface;
+  private requestPayload: ILambdaRequestPayloadInterface;
 
   /**
-   * @param {LambdaRequestPayloadInterface} requestPayload
+   * @param {ILambdaRequestPayloadInterface} requestPayload
    */
-  public constructor(requestPayload: LambdaRequestPayloadInterface) {
+  public constructor(requestPayload: ILambdaRequestPayloadInterface) {
     super();
 
     Error.captureStackTrace(this, this.constructor);
@@ -22,7 +21,7 @@ export class LambdaInvokeError extends Error {
   /**
    * @returns {number}
    */
-  public getRequestPayload(): LambdaRequestPayloadInterface {
+  public getRequestPayload(): ILambdaRequestPayloadInterface {
     return this.requestPayload;
   }
 }

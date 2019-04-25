@@ -1,7 +1,5 @@
-/**
- * @interface LoggerInterface
- */
-export interface LoggerInterface {
+
+export interface ILogger {
   debug(message: string, ...optionalParams: any[]): void;
   warn(message: string, ...optionalParams: any[]): void;
   error(message: string, ...optionalParams: any[]): void;

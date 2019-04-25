@@ -1,16 +1,16 @@
-import { Newable } from '@shared/interfaces/newable';
 import { FillableObjectWithValidation } from '@valueObjects/fillableObjectWithValidation';
 import { FieldErrorCollection } from '@errors/custom/fieldErrorCollection';
 import { handleNestedErrors } from '@errors/handle/handleError';
+import { Newable } from '@shared/interfaces/newable';
 
 export function setAndValidateNested<T extends FillableObjectWithValidation>(entityClass: Newable<T>): PropertyDecorator {
   return (target: any, propertyName: string) => {
-    function f(isGet: boolean) {
+    function fun(isGet: boolean) {
       return function (newValue?: any) {
         /*tslint:disable: no-invalid-this*/
         if (!Object.getOwnPropertyDescriptor(this, propertyName)) {
           let value: T;
-          /*tslint:disable: only-arrow-functions*/
+          /*tslint:disable: only-arrow-functions no-function-expression*/
           const getter = function () {
             return value;
           };
@@ -40,8 +40,8 @@ export function setAndValidateNested<T extends FillableObjectWithValidation>(ent
     }
 
     Object.defineProperty(target, propertyName, {
-      get: f(true),
-      set: f(false),
+      get: fun(true),
+      set: fun(false),
       enumerable: false,
       configurable: false
     });

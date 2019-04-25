@@ -1,17 +1,17 @@
-import {ErrorTarget} from '@constants/errors';
-import {CustomErrorInterface, isCustomErrorInterface} from '@errors/custom/misc/customErrorInterface';
+import { ErrorTarget } from '@constants/errors';
+import { ICustomError, isCustomErrorInterface } from '@errors/custom/misc/customErrorInterface';
 
-export class ResponseSingleError implements CustomErrorInterface {
+export class ResponseSingleError implements ICustomError {
   public readonly code: string;
   public readonly target: string;
   public readonly message?: string;
   public readonly source?: object;
 
-  constructor(code: string | CustomErrorInterface, target?: string, message?: string) {
+  constructor(code: string | ICustomError, target?: string, message?: string) {
     if (typeof(code) === 'object' && isCustomErrorInterface(code)) {
       this.code = code.code;
       this.target = code.target;
-      this.message = (<CustomErrorInterface>code).message;
+      this.message = (<ICustomError>code).message;
       if (code.source) {
         const source: any = JSON.parse(JSON.stringify(code.source));
         if (source.hasOwnProperty('privateCriteria')) {

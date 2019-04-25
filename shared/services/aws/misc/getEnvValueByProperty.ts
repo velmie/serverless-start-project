@@ -3,9 +3,9 @@
  * @return {Function}
  */
 const getEnvValueByProperty = (property: string): string => {
-  const value: string | undefined = process.env[property];
+  const value: undefined | string = process.env[property];
 
-  if (typeof value === 'undefined') {
+  if (value === undefined) {
     throw new TypeError(`${property} can\`t be undefined`);
   }
 

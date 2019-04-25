@@ -1,7 +1,7 @@
 /**
- * @interface CustomErrorInterface
+ * @interfaceICustomError
  */
-interface CustomErrorInterface {
+interface ICustomError {
   readonly code: string;
   readonly target: string;
   readonly message?: string;
@@ -13,6 +13,6 @@ function isCustomErrorInterface(object: object): boolean {
 }
 
 export {
-  CustomErrorInterface,
+ ICustomError,
   isCustomErrorInterface
 };

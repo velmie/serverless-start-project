@@ -1,12 +1,11 @@
-import {ErrorCollection} from '@errors/custom/misc/errorCollection';
-import {ValidationError} from '@errors/custom/validationError';
-import {FieldError} from '@errors/custom/fieldError';
+import { ErrorCollection } from '@errors/custom/misc/errorCollection';
+import { ValidationError } from '@errors/custom/validationError';
+import { FieldError } from '@errors/custom/fieldError';
 
 /**
  * @class FieldErrorCollection
  */
 export class FieldErrorCollection extends ErrorCollection {
-
   /**
    * @param {ValidationError[]} fieldErrors
    */

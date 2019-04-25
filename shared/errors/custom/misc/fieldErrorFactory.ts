@@ -1,12 +1,11 @@
-import {FieldError} from '@errors/custom/fieldError';
-import {snakeCase} from '@helpers/snakeCase';
-import {ValidationError as ValidatorError} from 'class-validator';
+import { FieldError } from '@errors/custom/fieldError';
+import { snakeCase } from '@helpers/snakeCase';
+import { ValidationError as ValidatorError } from 'class-validator';
 
 /**
  * @class FieldErrorFactory
  */
 export class FieldErrorFactory {
-
   /**
    * @param {ValidationError} error
    * @param {string} key

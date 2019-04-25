@@ -2,7 +2,6 @@ const path = require('path');
 const slsw = require('serverless-webpack');
 const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
 
-console.log('web');
 module.exports = {
   entry: slsw.lib.entries,
   resolve: {

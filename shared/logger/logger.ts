@@ -1,9 +1,9 @@
-import {LoggerInterface} from '@logger/loggerInterface';
+import { ILogger } from '@logger/loggerInterface';
 
 /**
  * @class Logger
  */
-class Logger implements LoggerInterface {
+class Logger implements ILogger {
   /**
    * @type {Console}
    */
