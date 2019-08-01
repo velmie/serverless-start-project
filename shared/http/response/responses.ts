@@ -2,8 +2,7 @@ import { cacheControl, contentLength, contentType, expires } from '@constants/he
 import { isJsonString } from '@helpers/json/isJsonString';
 import { logger } from '@logger/logger';
 import { IResponce } from '@shared/http/response/responceInterface';
-
-/*tslint:disable: no-magic-numbers*/
+import { HttpCode } from '@constants/httpCode';
 
 export class Response {
   private statusCode: number;
@@ -40,7 +39,7 @@ export class Response {
 
   private initializeByDefault(): void {
     /*tslint:disable: no-magic-numbers*/
-    this.statusCode = 200;
+    this.statusCode = HttpCode.SUCCESS;
     this.headers = {
       ...cacheControl.noCacheNoStoreRevalidateAgeZero,
       ...expires.zero
@@ -71,28 +70,28 @@ export function responseOk(data: object): IResponce {
 export function responseCreated(data: object): IResponce {
   return new Response()
     .setBody(data)
-    .setStatusCode(201)
+    .setStatusCode(HttpCode.CREATED)
     .addHeaders(contentType.applicationJSON)
     .responseCallback();
 }
 
 export function responseAccepted(): IResponce {
   return new Response()
-    .setStatusCode(202)
+    .setStatusCode(HttpCode.ACCEPTED)
     .addHeaders(contentType.applicationJSON)
     .responseCallback();
 }
 
-export function responseNoContent(): IResponce {
+export function respondNoContent(): IResponce {
   return new Response()
-    .setStatusCode(204)
+    .setStatusCode(HttpCode.NO_CONTENT)
     .addHeaders(contentLength.zero)
     .responseCallback();
 }
 
 export function responseRedirect(url: string): IResponce {
   return new Response()
-    .setStatusCode(301)
+    .setStatusCode(HttpCode.MOVED_PERMANENTLY)
     .addHeaders({ Location: url, ...contentLength.zero })
     .responseCallback();
 }
@@ -103,7 +102,7 @@ export function responseAlreadyReported(error?: Error): IResponce {
   }
 
   return new Response()
-    .setStatusCode(208)
+    .setStatusCode(HttpCode.ALREADY_REPORTED)
     .addHeaders(contentLength.zero)
     .responseCallback();
 }

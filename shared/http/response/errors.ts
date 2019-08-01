@@ -7,7 +7,7 @@ import { ErrorTarget } from '@constants/errors';
 import { snakeCase } from '@helpers/snakeCase';
 import { LambdaInvokeError } from '@errors/custom/lambdaInvokeError';
 import { IResponce } from '@shared/http/response/responceInterface';
-/*tslint:disable: no-magic-numbers*/
+import { HttpCode } from '@constants/httpCode';
 
 /**
  * Internal server error
@@ -17,7 +17,7 @@ import { IResponce } from '@shared/http/response/responceInterface';
  */
 export function internalErrorResp(error: Error, statusCode?: number): IResponce {
   logger.error('internalErrorResp', error.message, JSON.stringify(error));
-  const code = statusCode ? statusCode : 500;
+  const code = statusCode ? statusCode : HttpCode.INTERNAL_SERVER_ERROR;
 
   const response = {
     errors: [new ResponseSingleError('internal_error', ErrorTarget.COMMON, 'Internal Server Error')]
@@ -48,7 +48,7 @@ export function unauthorizedResp(error: Error): string {
  * @returns {}
  */
 export function validationErrorResp(error: ICustomError | Error): IResponce {
-  return errorResp(error, 422);
+  return errorResp(error, HttpCode.VALIDATION_ERROR);
 }
 
 /**
@@ -56,7 +56,7 @@ export function validationErrorResp(error: ICustomError | Error): IResponce {
  * @returns {}
  */
 export function notFoundErrorResp(error: ICustomError | Error): IResponce {
-  return errorResp(error, 404);
+  return errorResp(error, HttpCode.NOT_FOUND);
 }
 
 /**
@@ -68,7 +68,7 @@ export function notFoundErrorResp(error: ICustomError | Error): IResponce {
  * @returns {}
  */
 export function badRequestErrorResp(error: ICustomError | Error): IResponce {
-  return errorResp(error, 400);
+  return errorResp(error, HttpCode.BAD_REQUEST);
 }
 
 /**
@@ -87,7 +87,7 @@ export function lambdaInvokeErrorResp(error: LambdaInvokeError): IResponce {
 export function validationErrorCollectionResp(collection: ErrorCollection,
                                               statusCode?: number): IResponce {
   logger.error('Validation errors - collection', collection);
-  const code: number = statusCode ? statusCode : 422;
+  const code: number = statusCode ? statusCode : HttpCode.VALIDATION_ERROR;
 
   return responseObjectToJSON(code, collection);
 }
@@ -100,7 +100,7 @@ export function responseHtmlError(error: Error): IResponce {
   logger.error('Response html error', JSON.stringify(error));
 
   return  {
-    statusCode: 500,
+    statusCode: HttpCode.INTERNAL_SERVER_ERROR,
     headers: {
       'Content-Type': 'text/html'
     },
