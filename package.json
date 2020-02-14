@@ -10,7 +10,7 @@
   ],
   "dependencies": {
     "awesome-typescript-loader": "^5.2.1",
-    "aws-lambda": "^0.1.2",
+    "aws-lambda": "^1.0.5",
     "aws-sdk": "^2.400.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.9.1",
