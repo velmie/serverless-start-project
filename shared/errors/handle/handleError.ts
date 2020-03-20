@@ -6,8 +6,8 @@ import { FieldErrorCollection } from '@errors/custom/fieldErrorCollection';
 import { FieldError } from '@errors/custom/fieldError';
 
 /**
- * @param {Error} e
- * @returns {}
+ * @param {Error | ErrorCollection} e
+ * @returns {IResponce}
  */
 export function handleError(e: Error | ErrorCollection): IResponce {
   if (e instanceof ErrorCollection) {
@@ -17,6 +17,11 @@ export function handleError(e: Error | ErrorCollection): IResponce {
   }
 }
 
+/**
+ * @param {FieldErrorCollection} e
+ * @param {string} parentFieldName
+ * @returns {FieldErrorCollection}
+ */
 export function handleNestedErrors(e: FieldErrorCollection, parentFieldName: string): FieldErrorCollection {
   e.errors.forEach((error: FieldError) => {
     (<{ field: string }>error.source).field = `${parentFieldName}.${(<{ field: string }>error.source).field}`;

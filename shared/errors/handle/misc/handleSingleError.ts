@@ -1,11 +1,12 @@
 import { EntityNotFoundError } from '@errors/typeorm/entityNotFoundError';
+import { AuthorizationFailedError } from '@errors/custom/authorizationFailedError';
 import { ValidationError } from '@errors/custom/validationError';
 import { FieldError } from '@errors/custom/fieldError';
 import { BadRequestError } from '@errors/custom/http/badRequestError';
 import { LambdaInvokeError } from '@errors/custom/lambdaInvokeError';
 import { AlreadyExists } from '@errors/custom/alreadyExists';
 import { responseAlreadyReported } from '@responses';
-import { badRequestErrorResp, internalErrorResp, lambdaInvokeErrorResp, notFoundErrorResp, validationErrorResp } from '@responseErrors';
+import { badRequestErrorResp, internalErrorResp, lambdaInvokeErrorResp, notFoundErrorResp, validationErrorResp, unauthorizedErrorResp } from '@responseErrors';
 import { IResponce } from '@shared/http/response/responceInterface';
 
 /**
@@ -18,6 +19,8 @@ export function handleSingleError(e: Error): IResponce {
       return responseAlreadyReported(e);
     case e instanceof EntityNotFoundError:
       return notFoundErrorResp(e);
+    case e instanceof AuthorizationFailedError:
+      return unauthorizedErrorResp(e);
     case e instanceof ValidationError:
     case e instanceof FieldError:
       return validationErrorResp(e);

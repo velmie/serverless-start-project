@@ -4,7 +4,7 @@ import { IResponce } from '@shared/http/response/responceInterface';
 
 /**
  * @param {ErrorCollection} e
- * @returns {}
+ * @returns {IResponce}
  */
 export function handleCollectionError(e: ErrorCollection): IResponce {
   return validationErrorCollectionResp(e);

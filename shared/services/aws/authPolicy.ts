@@ -1,4 +1,4 @@
-import { Statement, StatementResource } from 'aws-lambda';
+import { Statement } from 'aws-lambda';
 
 /**
  * AuthPolicy receives a set of allowed and denied methods and generates a valid
@@ -95,7 +95,7 @@ export class AuthPolicy {
     ALL: '*',
   };
 
-  public constructor(principal, context, awsAccountId, apiOptions) {
+  public constructor(principal: string, context: object, awsAccountId: string, apiOptions: any) {
     this.awsAccountId = awsAccountId;
     this.principalId = principal;
     this.context = context;
@@ -123,14 +123,14 @@ export class AuthPolicy {
    * statement can be null.
    *
    * @method addMethod
-   * @param {String} The effect for the policy. This can only be 'Allow' or 'Deny'.
-   * @param {String} he HTTP verb for the method, this should ideally come from the
+   * @param {String} effect - The effect for the policy. This can only be 'Allow' or 'Deny'.
+   * @param {String} verb - he HTTP verb for the method, this should ideally come from the
    *                 AuthPolicy.HttpVerb object to avoid spelling mistakes
-   * @param {String} The resource path. For example '/pets'
-   * @param {Object} The conditions object in the format specified by the AWS docs.
+   * @param {String} resource - The resource path. For example '/pets'
+   * @param {Object} conditions - The conditions object in the format specified by the AWS docs.
    * @return {void}
    */
-  private addMethod(effect, verb, resource, conditions) {
+  private addMethod(effect: string, verb: string, resource: string, conditions: object) {
     if (verb !== '*' && !{}.hasOwnProperty.call(this.HttpVerb.hasOwnProperty, verb)) {
       throw new Error(`Invalid HTTP verb ${verb}. Allowed verbs in AuthPolicy.HttpVerb`);
     }
@@ -164,18 +164,17 @@ export class AuthPolicy {
    * desired effect.
    *
    * @method getEmptyStatement
-   * @param {String} The effect of the statement, this can be 'Allow' or 'Deny'
-   * @return {Object} An empty statement object with the Action, Effect, and Resource
+   * @param {String} effect - The effect of the statement, this can be 'Allow' or 'Deny'
+   * @return {Statement} An empty statement object with the Action, Effect, and Resource
    *                  properties prepopulated.
    */
-  private getEmptyStatement = (effect) => {
+  private getEmptyStatement = (effect: string): Statement => {
     const statementEffect = effect.substring(0, 1).toUpperCase() + effect.substring(1, effect.length).toLowerCase();
-    const statement: Statement = <Statement>{
+    return <Statement>{
       Action: 'execute-api:Invoke',
       Effect: statementEffect,
       Resource: []
     };
-    return statement;
   };
 
   /**
@@ -183,12 +182,12 @@ export class AuthPolicy {
    * conditions statement and generates the array of statements for the policy.
    *
    * @method getStatementsForEffect
-   * @param {String} The desired effect. This can be 'Allow' or 'Deny'
-   * @param {Array} An array of method objects containing the ARN of the resource
+   * @param {String} effect - The desired effect. This can be 'Allow' or 'Deny'
+   * @param {Array} methods - An array of method objects containing the ARN of the resource
    *                and the conditions for the policy
    * @return {Array} an array of formatted statements for the policy.
    */
-  private getStatementsForEffect = (effect, methods) => {
+  private getStatementsForEffect = (effect: string, methods: any[]): Statement[] => {
     const statements: Statement[] = [];
 
     if (methods.length > 0) {

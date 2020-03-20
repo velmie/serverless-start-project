@@ -1,6 +1,6 @@
 /**
  * @param {string} property
- * @return {Function}
+ * @return {string}
  */
 const getEnvValueByProperty = (property: string): string => {
   const value: undefined | string = process.env[property];
