@@ -27,7 +27,7 @@ export class EntityNotFoundError extends Error implements ICustomError {
     this.target = ErrorTarget.COMMON;
     this.source = {
       type: (typeof entityClass === 'string') ? entityClass : entityClass.name,
-      privateCriteria
+      ...privateCriteria
     };
   }
 }
