@@ -30,14 +30,13 @@ export function internalErrorResp(error: Error, statusCode?: number): IResponce 
 /**
  * Unauthorized error
  *
+ *  * default statusCode is 401
+ *
  * @param {Error} error
- * @returns {string}
+ * @returns {}
  */
-export function unauthorizedResp(error: Error): string {
-  logger.debug('responseErrors - unauthorizedResp');
-  logger.error(error.message, error);
-
-  return 'Unauthorized';
+export function unauthorizedErrorResp(error: ICustomError | Error): IResponce {
+  return errorResp(error, HttpCode.UNAUTHORIZED);
 }
 
 /**
@@ -121,7 +120,7 @@ function errorResp(error: ICustomError | Error, statusCode: number): IResponce {
   } else {
     singleError = new ResponseSingleError(snakeCase(error.constructor.name), ErrorTarget.COMMON, error.message);
   }
-  logger.error(singleError.code + ' - single error', JSON.stringify(error));
+  logger.error(singleError.code + ' - single error', JSON.stringify(singleError));
 
   const data = {
     errors: [singleError]
