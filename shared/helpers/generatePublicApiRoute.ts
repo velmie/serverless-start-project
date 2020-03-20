@@ -5,10 +5,10 @@ import {getStage} from '@services/aws/misc/getStage';
  *
  * @param {number} versionNumber
  * @param {string} path
- * @param {object} params
+ * @param {string} params
  * @returns {string}
  */
-const generatePublicApiRoute = (versionNumber: number, path: string, params: string = '') => {
+const generatePublicApiRoute = (versionNumber: number, path: string, params: string = ''): string => {
   const baseRoute: string = process.env.basePublicWebRoute!;
   const stage: string = getStage();
   const version: string = 'v' + versionNumber;

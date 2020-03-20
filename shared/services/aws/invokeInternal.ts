@@ -4,6 +4,7 @@ import {generateFunctionName} from '@services/aws/misc/generateFunctionName';
 
 /**
  * @param {string} functionName
+ * @param {string} serviceName
  * @param {object} params
  */
 export function invokeInternal(functionName: string, serviceName: string, params: object = {}) {

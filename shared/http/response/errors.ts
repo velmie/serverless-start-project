@@ -12,8 +12,9 @@ import { HttpCode } from '@constants/httpCode';
 /**
  * Internal server error
  *
- * @param error
+ * @param {Error} error
  * @param {number} statusCode - default is 500
+ * @returns {IResponce}
  */
 export function internalErrorResp(error: Error, statusCode?: number): IResponce {
   logger.error('internalErrorResp', error.message, JSON.stringify(error));
@@ -30,7 +31,7 @@ export function internalErrorResp(error: Error, statusCode?: number): IResponce 
  * Unauthorized error
  *
  * @param {Error} error
- * @returns {}
+ * @returns {string}
  */
 export function unauthorizedResp(error: Error): string {
   logger.debug('responseErrors - unauthorizedResp');
@@ -44,16 +45,16 @@ export function unauthorizedResp(error: Error): string {
  *
  * default statusCode is 422
  *
- * @param {Error} error
- * @returns {}
+ * @param {ICustomError | Error} error
+ * @returns {IResponce}
  */
 export function validationErrorResp(error: ICustomError | Error): IResponce {
   return errorResp(error, HttpCode.VALIDATION_ERROR);
 }
 
 /**
- * @param {CustomErrorInterface} error
- * @returns {}
+ * @param {ICustomError | Error} error
+ * @returns {IResponce}
  */
 export function notFoundErrorResp(error: ICustomError | Error): IResponce {
   return errorResp(error, HttpCode.NOT_FOUND);
@@ -64,8 +65,8 @@ export function notFoundErrorResp(error: ICustomError | Error): IResponce {
  *
  * statusCode is 400
  *
- * @param {Error} error
- * @returns {}
+ * @param {ICustomError | Error} error
+ * @returns {IResponce}
  */
 export function badRequestErrorResp(error: ICustomError | Error): IResponce {
   return errorResp(error, HttpCode.BAD_REQUEST);
@@ -73,7 +74,7 @@ export function badRequestErrorResp(error: ICustomError | Error): IResponce {
 
 /**
  * @param {LambdaInvokeError} error
- * @returns {}
+ * @returns {IResponce}
  */
 export function lambdaInvokeErrorResp(error: LambdaInvokeError): IResponce {
   return error.getRequestPayload();
@@ -82,7 +83,7 @@ export function lambdaInvokeErrorResp(error: LambdaInvokeError): IResponce {
 /**
  * @param {ErrorCollection} collection
  * @param {number} statusCode
- * @returns {}
+ * @returns {IResponce}
  */
 export function validationErrorCollectionResp(collection: ErrorCollection,
                                               statusCode?: number): IResponce {
@@ -94,7 +95,7 @@ export function validationErrorCollectionResp(collection: ErrorCollection,
 
 /**
  * @param {Error} error
- * @returns {}
+ * @returns {IResponce}
  */
 export function responseHtmlError(error: Error): IResponce {
   logger.error('Response html error', JSON.stringify(error));
@@ -109,9 +110,9 @@ export function responseHtmlError(error: Error): IResponce {
 }
 
 /**
- * @param {CustomErrorInterface | Error} error
+ * @param {ICustomError | Error} error
  * @param {number} statusCode
- * @returns {}
+ * @returns {IResponce}
  */
 function errorResp(error: ICustomError | Error, statusCode: number): IResponce {
   let singleError: any;

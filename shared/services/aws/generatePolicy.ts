@@ -1,6 +1,6 @@
 import { AuthPolicy } from '@services/aws/authPolicy';
 
-const generatePolicy = (principalId, context, methodArn, effect = 'allow') => {
+const generatePolicy = (principalId: string, context: object, methodArn: string, effect : string = 'allow') => {
   // build apiOptions for the AuthPolicy
   const apiOptions: any = {};
   const tmp = methodArn.split(':');

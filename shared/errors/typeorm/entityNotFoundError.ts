@@ -13,7 +13,7 @@ export class EntityNotFoundError extends Error implements ICustomError {
   public readonly source: object;
 
   /**
-   * @param {ObjectType<any> | string} entityClass
+   * @param {ObjectType<{name: string}> | string} entityClass
    * @param {object} privateCriteria
    */
   public constructor(entityClass: ObjectType<{name: string}> | string, privateCriteria: object) {

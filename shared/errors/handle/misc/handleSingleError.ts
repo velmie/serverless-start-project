@@ -10,7 +10,7 @@ import { IResponce } from '@shared/http/response/responceInterface';
 
 /**
  * @param {Error} e
- * @returns {}
+ * @returns {IResponce}
  */
 export function handleSingleError(e: Error): IResponce {
   switch (true) {
